@@ -1,5 +1,6 @@
 import "dotenv/config";
 import http from "node:http";
+import fs from "node:fs";
 import WebSocket from "ws";
 import { SocksProxyAgent } from "socks-proxy-agent";
 import crypto from "node:crypto";
@@ -1571,8 +1572,22 @@ http.createServer(async (req, res) => {
     try {
         // Ana sayfa (Backend'de HTML yok, sadece API)
         if (url.pathname === '/') {
-            return json(res, 200, { status: 'ok', message: 'Starblast Bot Backend API', bots: sessions.size });
-        }
+    try {
+        const html = fs.readFileSync("./index.html", "utf8");
+
+        res.writeHead(200, {
+            "Content-Type": "text/html; charset=utf-8"
+        });
+
+        return res.end(html);
+    } catch (e) {
+        console.error("index.html okunamadı:", e.message);
+        return json(res, 500, {
+            error: "index.html bulunamadı"
+        });
+    }
+}
+
 
         if (url.pathname === '/api/radar') {
             const servers = await getEUSurvivalServers();
