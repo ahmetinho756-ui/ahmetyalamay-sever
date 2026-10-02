@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SB Komuta Merkezi</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font:14px 'Segoe UI',system-ui,sans-serif;background:#0b0d12;color:#e0e0e0;min-height:100vh}
+.container{max-width:1300px;margin:0 auto;padding:20px}
+header{background:linear-gradient(135deg,#1a1f2e,#0f131e);border:1px solid #2a3142;border-radius:12px;padding:20px;margin-bottom:20px;display:flex;justify-content:space-between;align-items:center}
+header h1{font-size:22px;background:linear-gradient(90deg,#4facfe,#00f2fe);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:20px}
+.stat{background:#151924;border:1px solid #2a3142;border-radius:10px;padding:15px;text-align:center}
+.stat .val{font-size:26px;font-weight:bold}
+.stat .lbl{font-size:11px;color:#8892a6;margin-top:4px;text-transform:uppercase}
+.c-blue{color:#4facfe} .c-green{color:#00e676} .c-orange{color:#ff9800} .c-red{color:#ff5252} .c-purple{color:#b388ff}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px}
+@media(max-width:900px){.grid-2{grid-template-columns:1fr}}
+.card{background:#151924;border:1px solid #2a3142;border-radius:12px;padding:18px}
+.card h2{font-size:16px;margin-bottom:15px;display:flex;align-items:center;gap:8px}
+.radar-list{max-height:350px;overflow-y:auto;display:flex;flex-direction:column;gap:8px}
+.srv{background:#0f131e;border:1px solid #2a3142;border-radius:8px;padding:12px;display:flex;justify-content:space-between;align-items:center;transition:.2s}
+.srv:hover{border-color:#4facfe;background:#1a1f2e}
+.srv-info{flex:1}
+.srv-name{font-weight:bold;font-size:14px}
+.srv-meta{font-size:11px;color:#8892a6;margin-top:3px}
+.srv-bar{width:100px;height:6px;background:#2a3142;border-radius:3px;overflow:hidden;margin-top:5px}
+.srv-bar-fill{height:100%;border-radius:3px}
+.btn-quick{background:linear-gradient(135deg,#4facfe,#00f2fe);color:#000;border:none;padding:8px 14px;border-radius:6px;font-weight:bold;cursor:pointer;font-size:12px;white-space:nowrap}
+.btn-quick:hover{opacity:.9}
+.ctrl-row{display:flex;gap:10px;margin-bottom:12px;flex-wrap:wrap;align-items:center}
+input{flex:1;min-width:120px;padding:10px 14px;background:#0f131e;border:1px solid #2a3142;color:#fff;border-radius:8px;font:inherit}
+input:focus{outline:none;border-color:#4facfe}
+input[type=number]{max-width:80px;flex:0}
+.btn{padding:10px 20px;border:none;border-radius:8px;font-weight:bold;cursor:pointer;font-size:13px;transition:.2s}
+.btn-go{background:linear-gradient(135deg,#00e676,#00c853);color:#000}
+.btn-stop{background:linear-gradient(135deg,#ff5252,#d32f2f);color:#fff}
+.btn-test{background:linear-gradient(135deg,#ff9800,#f57c00);color:#000}
+.btn:hover{opacity:.9;transform:translateY(-1px)}
+#testRes{font-size:11px;margin-top:10px;max-height:80px;overflow-y:auto;color:#8892a6;line-height:1.6}
+.bot-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;margin-top:20px}
+.bot{background:#151924;border:1px solid #2a3142;border-radius:10px;padding:12px}
+.bot.in{border-left:3px solid #00e676} .bot.wait{border-left:3px solid #ff9800}
+.bot-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.bot-name{font-weight:bold;font-size:13px}
+.badge{font-size:9px;padding:3px 8px;border-radius:10px;font-weight:bold;text-transform:uppercase}
+.b-in{background:#00e676;color:#000} .b-wait{background:#ff9800;color:#000}
+.bot-meta{font-size:11px;color:#8892a6;line-height:1.6}
+.bot-proxy{font-size:10px;color:#4facfe;margin-top:6px;word-break:break-all}
+.empty{text-align:center;padding:40px;color:#555;grid-column:1/-1}
+.toggle-group{display:flex;gap:0;border-radius:8px;overflow:hidden;border:1px solid #2a3142}
+.toggle-btn{padding:8px 16px;background:#0f131e;color:#8892a6;border:none;cursor:pointer;font:inherit;font-size:12px;font-weight:bold;transition:.2s}
+.toggle-btn.active{background:#4facfe;color:#000}
+.toggle-btn:hover:not(.active){background:#1a1f2e}
+#customNameInput{display:none}
+.checkbox-label{display:flex;align-items:center;gap:8px;font-size:13px;color:#e0e0e0;cursor:pointer;background:#1a2533;padding:10px 16px;border-radius:8px;border:1px solid #2d5bff}
+.checkbox-label input{width:18px;height:18px;accent-color:#4facfe;flex:none}
+::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:#0b0d12}::-webkit-scrollbar-thumb{background:#2a3142;border-radius:3px}
+</style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>🚀 STARBLAST KOMUTA MERKEZİ</h1>
+        <div style="font-size:12px;color:#8892a6">Filo: <span class="c-purple" style="font-weight:bold">1100 BOT</span></div>
+    </header>
+
+    <div class="stats">
+        <div class="stat"><div class="val c-blue" id="sProxy">0/0</div><div class="lbl">Sağlıklı Proxy</div></div>
+        <div class="stat"><div class="val c-purple" id="sTot">0</div><div class="lbl">Toplam Bot</div></div>
+        <div class="stat"><div class="val c-green" id="sIn">0</div><div class="lbl">Oyunda</div></div>
+        <div class="stat"><div class="val c-orange" id="sCon">0</div><div class="lbl">Bağlanıyor</div></div>
+        <div class="stat"><div class="val c-red" id="sMax">1100</div><div class="lbl">Maksimum</div></div>
+    </div>
+
+    <div class="grid-2">
+        <div class="card">
+            <h2>📡 EU SURVIVAL RADAR <span style="font-size:11px;color:#8892a6;font-weight:normal">(Canlı)</span></h2>
+            <div class="radar-list" id="radar"><div class="empty">Radar taranıyor...</div></div>
+        </div>
+
+        <div class="card">
+            <h2>🎯 BİRLEŞİK KOMUTALAR</h2>
+            <div class="ctrl-row">
+                <input type="text" id="link" placeholder="Sunucu Linki (#3539@51.255.91.80:3017)">
+                <input type="number" id="cnt" value="60" min="1" max="1100">
+            </div>
+            
+            <div class="ctrl-row">
+                <label class="checkbox-label" style="flex:1">
+                    <input type="checkbox" id="customRoom" onchange="toggleCustomRoom()">
+                    <strong>🔒 Özel Oda / Team Modu</strong> <span style="color:#8892a6; font-weight:normal; font-size:11px">(Otomatik 420 Bot)</span>
+                </label>
+            </div>
+
+            <div class="ctrl-row">
+                <span style="font-size:12px;color:#8892a6;white-space:nowrap">İsim:</span>
+                <div class="toggle-group">
+                    <button class="toggle-btn active" id="togRandom" onclick="setNameMode('random')">🎲 Random</button>
+                    <button class="toggle-btn" id="togCustom" onclick="setNameMode('custom')">✏️ Belirli</button>
+                </div>
+                <input type="text" id="customNameInput" placeholder="Tam isim (Max 15 krk)" style="max-width:180px">
+            </div>
+            <div class="ctrl-row">
+                <button class="btn btn-go" id="btnStart">▶ Filoyu Başlat</button>
+                <button class="btn btn-stop" id="btnStop">⏹ Acil Çıkış</button>
+                <button class="btn btn-test" id="btnTest">🔍 Proxy Test</button>
+            </div>
+            <div id="testRes"></div>
+        </div>
+    </div>
+
+    <h2 style="margin:20px 0 10px;font-size:16px">👥 AKTİF FİLO DURUMU</h2>
+    <div class="bot-grid" id="grid"><div class="empty">Henüz aktif bot yok.</div></div>
+</div>
+
+<script>
+// ⚠️ KRİTİK: Buraya Render/Railway'de çalışan backend adresini yaz!
+// Örnek: const API_URL = "https://my-starblast-bot.onrender.com";
+const API_URL = "https://SENIN_BACKEND_ADRESIN.com";
+
+let currentNameMode = 'random';
+
+window.setNameMode = function(mode) {
+    currentNameMode = mode;
+    document.getElementById('togRandom').classList.toggle('active', mode === 'random');
+    document.getElementById('togCustom').classList.toggle('active', mode === 'custom');
+    document.getElementById('customNameInput').style.display = mode === 'custom' ? 'block' : 'none';
+};
+
+window.toggleCustomRoom = function() {
+    const isCustom = document.getElementById('customRoom').checked;
+    document.getElementById('cnt').value = isCustom ? 420 : 60;
+};
+
+document.getElementById('link').addEventListener('input', function() {
+    if (this.value.includes('@')) {
+        document.getElementById('customRoom').checked = true;
+        toggleCustomRoom();
+    }
+});
+
+window.startBots = async function() {
+    try {
+        const l = document.getElementById('link').value;
+        const c = parseInt(document.getElementById('cnt').value) || 60;
+        const isCustom = document.getElementById('customRoom').checked;
+        
+        if(!l) return alert('Lütfen bir sunucu seçin veya link girin!');
+        if (currentNameMode === 'custom' && !document.getElementById('customNameInput').value.trim()) {
+            return alert('Belirli isim modundasınız, lütfen bir isim girin!');
+        }
+        
+        const btn = document.getElementById('btnStart');
+        btn.textContent = '⏳ Sunucuya emir gönderiliyor...';
+        btn.disabled = true;
+        
+        const r = await fetch(`${API_URL}/api/start`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                link: l, count: c, nameMode: currentNameMode, 
+                customName: document.getElementById('customNameInput').value.trim(),
+                isCustomRoom: isCustom
+            })
+        });
+        const data = await r.json();
+        alert(data.msg || data.error);
+        
+        btn.textContent = '▶ Filoyu Başlat';
+        btn.disabled = false;
+        fetchData();
+    } catch(e) {
+        console.error('startBots hatası:', e);
+        alert('Backend sunucusuna bağlanılamadı. API_URL\'yi kontrol et!');
+    }
+};
+
+window.stopBots = async function() {
+    try {
+        if(!confirm('TÜM BOTLAR ÇIKARILACAK! Emin misin?')) return;
+        await fetch(`${API_URL}/api/stop`, { method: 'POST' });
+        fetchData();
+    } catch(e) { console.error('stopBots hatası:', e); }
+};
+
+window.testProxies = async function() {
+    try {
+        const res = document.getElementById('testRes');
+        res.innerHTML = '<span style="color:#ff9800">⏳ Sunucuda test ediliyor...</span>';
+        const r = await fetch(`${API_URL}/api/test`);
+        const d = await r.json();
+        const ok = d.results.filter(x => x.ok).length;
+        res.innerHTML = '<div style="margin-bottom:5px;color:#00e676">✅ ' + ok + '/' + d.results.length + ' Proxy Çalışıyor</div>' +
+            d.results.map(x => '<span style="color:' + (x.ok ? '#00e676' : '#ff5252') + '">● ' + x.proxy + ' </span>').join('');
+    } catch(e) { console.error('testProxies hatası:', e); }
+};
+
+window.quickStart = function(id) {
+    try {
+        document.getElementById('link').value = 'https://starblast.io/#' + id;
+        document.getElementById('cnt').value = 60;
+        startBots();
+    } catch(e) { console.error('quickStart hatası:', e); }
+};
+
+async function fetchData() {
+    try {
+        const r = await fetch(`${API_URL}/api/state`);
+        const data = await r.json();
+        document.getElementById('sTot').textContent = data.total;
+        document.getElementById('sIn').textContent = data.inGame;
+        document.getElementById('sCon').textContent = data.total - data.inGame;
+        
+        const grid = document.getElementById('grid');
+        grid.innerHTML = data.bots.length ? data.bots.map(b => {
+            const c = b.isInGame ? 'in' : 'wait';
+            const bc = b.isInGame ? 'b-in' : 'b-wait';
+            return '<div class="bot ' + c + '"><div class="bot-head"><span class="bot-name">' + b.name + '</span><span class="badge ' + bc + '">' + b.status + '</span></div>' +
+                '<div class="bot-meta">ID: ' + (b.shipId || '-') + ' | Ping: ' + (b.ping || 0) + 'ms | #' + (b.systemId || '-') + '<br>Süre: ' + Math.floor((b.uptime || 0) / 60) + 'dk</div>' +
+                '<div class="bot-proxy">🔌 ' + b.proxy + '</div></div>';
+        }).join('') : '<div class="empty">Henüz aktif bot yok.</div>';
+    } catch(e) { /* Sessizce geç */ }
+}
+
+async function fetchRadar() {
+    try {
+        const r = await fetch(`${API_URL}/api/radar`);
+        const data = await r.json();
+        document.getElementById('sProxy').textContent = data.proxyStats.healthy + '/' + data.proxyStats.total;
+        
+        const radar = document.getElementById('radar');
+        radar.innerHTML = data.servers.length ? data.servers.map(s => {
+            const pct = Math.round((s.players / s.max) * 100);
+            const color = pct > 80 ? '#ff5252' : pct > 50 ? '#ff9800' : '#00e676';
+            return '<div class="srv">' +
+                '<div class="srv-info">' +
+                    '<div class="srv-name">' + s.name + ' <span style="color:#4facfe;font-size:11px">#' + s.id + '</span></div>' +
+                    '<div class="srv-meta">' + s.players + '/' + s.max + ' Oyuncu ' + (s.open ? '' : '<span style="color:#ff5252">[KAPALI]</span>') + '</div>' +
+                    '<div class="srv-bar"><div class="srv-bar-fill" style="width:' + pct + '%;background:' + color + '"></div></div>' +
+                '</div>' +
+                '<button class="btn-quick" onclick="quickStart(' + s.id + ')">▶ 60 Bot</button>' +
+            '</div>';
+        }).join('') : '<div class="empty">EU Survival sunucusu bulunamadı.</div>';
+    } catch(e) {}
+}
+
+document.getElementById('btnStart').addEventListener('click', startBots);
+document.getElementById('btnStop').addEventListener('click', stopBots);
+document.getElementById('btnTest').addEventListener('click', testProxies);
+
+fetchData();
+fetchRadar();
+setInterval(fetchData, 2000);
+setInterval(fetchRadar, 30000);
+</script>
+</body>
+</html>
