@@ -56,12 +56,6 @@ input[type=number]{max-width:80px;flex:0}
 #customNameInput{display:none}
 .checkbox-label{display:flex;align-items:center;gap:8px;font-size:13px;color:#e0e0e0;cursor:pointer;background:#1a2533;padding:10px 16px;border-radius:8px;border:1px solid #2d5bff}
 .checkbox-label input{width:18px;height:18px;accent-color:#4facfe;flex:none}
-
-/* YENİ: Mod Etiketleri */
-.mode-badge{font-size:9px;padding:2px 6px;border-radius:4px;font-weight:bold;text-transform:uppercase;margin-left:6px;display:inline-block}
-.mode-survival{background:#ff9800;color:#000}
-.mode-team{background:#4facfe;color:#000}
-
 ::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:#0b0d12}::-webkit-scrollbar-thumb{background:#2a3142;border-radius:3px}
 </style>
 </head>
@@ -82,7 +76,7 @@ input[type=number]{max-width:80px;flex:0}
 
     <div class="grid-2">
         <div class="card">
-            <h2>📡 EU RADAR <span style="font-size:11px;color:#8892a6;font-weight:normal">(Survival + Team)</span></h2>
+            <h2>📡 EU RADAR (Survival + Team) <span style="font-size:11px;color:#8892a6;font-weight:normal">(Canlı)</span></h2>
             <div class="radar-list" id="radar"><div class="empty">Radar taranıyor...</div></div>
         </div>
 
@@ -90,34 +84,34 @@ input[type=number]{max-width:80px;flex:0}
             <h2>🎯 BİRLEŞİK KOMUTALAR</h2>
             <div class="ctrl-row">
                 <input type="text" id="link" placeholder="Sunucu Linki (#3539@51.255.91.80:3017)">
-                <input type="number" id="cnt" value="64" min="1" max="2000">
+                <input type="number" id="cnt" value="60" min="1" max="2000">
             </div>
             
             <div class="ctrl-row">
                 <label class="checkbox-label" style="flex:1">
                     <input type="checkbox" id="customRoom" onchange="toggleCustomRoom()">
-                    <strong>Gotn / Aow  lotsun iomun sülalesini</strong> <span style="color:#8892a6; font-weight:normal; font-size:11px">(Otomatik 64 Bot)</span>
+                    <strong>Gotn / Aow lotsun iomun sülalesini</strong> <span style="color:#8892a6; font-weight:normal; font-size:11px">(Otomatik 420 Bot)</span>
                 </label>
             </div>
 
             <div class="ctrl-row">
                 <span style="font-size:12px;color:#8892a6;white-space:nowrap">İsim:</span>
                 <div class="toggle-group">
-                    <button class="toggle-btn active" id="togRandom" onclick="setNameMode('random')"> Random</button>
+                    <button class="toggle-btn active" id="togRandom" onclick="setNameMode('random')">Random</button>
                     <button class="toggle-btn" id="togCustom" onclick="setNameMode('custom')">isim belirle</button>
                 </div>
                 <input type="text" id="customNameInput" placeholder="Tam isim (Max 15 krk)" style="max-width:180px">
             </div>
             <div class="ctrl-row">
                 <button class="btn btn-go" id="btnStart">BOTLARI Başlat</button>
-                <button class="btn btn-stop" id="btnStop"> botları çıkart</button>
-                <button class="btn btn-test" id="btnTest">proxy test</button>
+                <button class="btn btn-stop" id="btnStop">botları çıkart</button>
+                <button class="btn btn-test" id="btnTest">sakın tıklama amk</button>
             </div>
             <div id="testRes"></div>
         </div>
     </div>
 
-    <h2 style="margin:20px 0 10px;font-size:16px"> AKTİF BOT DURUMU</h2>
+    <h2 style="margin:20px 0 10px;font-size:16px">AKTİF BOT DURUMU</h2>
     <div class="bot-grid" id="grid"><div class="empty">Henüz aktif bot yok.</div></div>
 </div>
 
@@ -133,10 +127,10 @@ window.setNameMode = function(mode) {
     document.getElementById('customNameInput').style.display = mode === 'custom' ? 'block' : 'none';
 };
 
-// GÜNCELLENDİ: Özel oda butonu 64 bot
+// GÜNCELLENDİ: Özel oda işaretlenince 420 bot olur
 window.toggleCustomRoom = function() {
     const isCustom = document.getElementById('customRoom').checked;
-    document.getElementById('cnt').value = isCustom ? 64 : 60;
+    document.getElementById('cnt').value = isCustom ? 420 : 60;
 };
 
 document.getElementById('link').addEventListener('input', function() {
@@ -149,7 +143,7 @@ document.getElementById('link').addEventListener('input', function() {
 window.startBots = async function() {
     try {
         const l = document.getElementById('link').value;
-        const c = parseInt(document.getElementById('cnt').value) || 64;
+        const c = parseInt(document.getElementById('cnt').value) || 60;
         const isCustom = document.getElementById('customRoom').checked;
         
         if(!l) return alert('Lütfen bir sunucu seçin veya link girin!');
@@ -205,7 +199,7 @@ window.testProxies = async function() {
 window.quickStart = function(id) {
     try {
         document.getElementById('link').value = 'https://starblast.io/#' + id;
-        document.getElementById('cnt').value = 64;
+        document.getElementById('cnt').value = 60;
         startBots();
     } catch(e) { console.error('quickStart hatası:', e); }
 };
@@ -229,7 +223,6 @@ async function fetchData() {
     } catch(e) { /* Sessizce geç */ }
 }
 
-// GÜNCELLENDİ: Radar artık Survival ve Team modlarını farklı renklerle gösteriyor
 async function fetchRadar() {
     try {
         const r = await fetch(`${API_URL}/api/radar`);
@@ -240,25 +233,19 @@ async function fetchRadar() {
         radar.innerHTML = data.servers.length ? data.servers.map(s => {
             const pct = Math.round((s.players / s.max) * 100);
             const color = pct > 80 ? '#ff5252' : pct > 50 ? '#ff9800' : '#00e676';
-            
-            // Mod etiketi (Survival turuncu, Team mavi)
-            const modeLower = (s.mode || "").toLowerCase();
-            const isTeam = modeLower.includes("team");
-            const modeClass = isTeam ? 'mode-team' : 'mode-survival';
-            const modeLabel = isTeam ? 'TEAM' : 'SURVIVAL';
+            // Mod etiketini de ekledik (Survival veya Team)
+            const modeTag = s.mode ? `<span style="background:#2a3142;padding:2px 6px;border-radius:4px;font-size:10px;margin-left:5px">${s.mode.toUpperCase()}</span>` : '';
             
             return '<div class="srv">' +
                 '<div class="srv-info">' +
-                    '<div class="srv-name">' + s.name + ' <span style="color:#4facfe;font-size:11px">#' + s.id + '</span>' +
-                        '<span class="mode-badge ' + modeClass + '">' + modeLabel + '</span>' +
-                    '</div>' +
+                    '<div class="srv-name">' + s.name + ' <span style="color:#4facfe;font-size:11px">#' + s.id + '</span>' + modeTag + '</div>' +
                     '<div class="srv-meta">' + s.players + '/' + s.max + ' Oyuncu ' + (s.open ? '' : '<span style="color:#ff5252">[KAPALI]</span>') + '</div>' +
                     '<div class="srv-bar"><div class="srv-bar-fill" style="width:' + pct + '%;background:' + color + '"></div></div>' +
                 '</div>' +
-                '<button class="btn-quick" onclick="quickStart(' + s.id + ')">▶ 64 Bot</button>' +
+                '<button class="btn-quick" onclick="quickStart(' + s.id + ')">▶ 60 Bot</button>' +
             '</div>';
         }).join('') : '<div class="empty">EU sunucusu bulunamadı.</div>';
-    } catch(e) {}
+    } catch(e) { console.error('fetchRadar hatası:', e); }
 }
 
 document.getElementById('btnStart').addEventListener('click', startBots);
