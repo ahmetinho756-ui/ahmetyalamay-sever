@@ -56,6 +56,12 @@ input[type=number]{max-width:80px;flex:0}
 #customNameInput{display:none}
 .checkbox-label{display:flex;align-items:center;gap:8px;font-size:13px;color:#e0e0e0;cursor:pointer;background:#1a2533;padding:10px 16px;border-radius:8px;border:1px solid #2d5bff}
 .checkbox-label input{width:18px;height:18px;accent-color:#4facfe;flex:none}
+
+/* YENİ: Mod Etiketleri */
+.mode-badge{font-size:9px;padding:2px 6px;border-radius:4px;font-weight:bold;text-transform:uppercase;margin-left:6px;display:inline-block}
+.mode-survival{background:#ff9800;color:#000}
+.mode-team{background:#4facfe;color:#000}
+
 ::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:#0b0d12}::-webkit-scrollbar-thumb{background:#2a3142;border-radius:3px}
 </style>
 </head>
@@ -63,7 +69,7 @@ input[type=number]{max-width:80px;flex:0}
 <div class="container">
     <header>
         <h1>OROSPU COCUKLARIYLA MÜCADELE</h1>
-        <div style="font-size:12px;color:#8892a6">Filo: <span class="c-purple" style="font-weight:bold">1100 BOT</span></div>
+        <div style="font-size:12px;color:#8892a6">Filo: <span class="c-purple" style="font-weight:bold">2000 BOT</span></div>
     </header>
 
     <div class="stats">
@@ -71,12 +77,12 @@ input[type=number]{max-width:80px;flex:0}
         <div class="stat"><div class="val c-purple" id="sTot">0</div><div class="lbl">Toplam Bot</div></div>
         <div class="stat"><div class="val c-green" id="sIn">0</div><div class="lbl">Oyunda</div></div>
         <div class="stat"><div class="val c-orange" id="sCon">0</div><div class="lbl">Bağlanıyor</div></div>
-        <div class="stat"><div class="val c-red" id="sMax">1100</div><div class="lbl">Maksimum</div></div>
+        <div class="stat"><div class="val c-red" id="sMax">2000</div><div class="lbl">Maksimum</div></div>
     </div>
 
     <div class="grid-2">
         <div class="card">
-            <h2>📡 EU SURVIVAL RADAR <span style="font-size:11px;color:#8892a6;font-weight:normal">(Canlı)</span></h2>
+            <h2>📡 EU RADAR <span style="font-size:11px;color:#8892a6;font-weight:normal">(Survival + Team)</span></h2>
             <div class="radar-list" id="radar"><div class="empty">Radar taranıyor...</div></div>
         </div>
 
@@ -84,13 +90,13 @@ input[type=number]{max-width:80px;flex:0}
             <h2>🎯 BİRLEŞİK KOMUTALAR</h2>
             <div class="ctrl-row">
                 <input type="text" id="link" placeholder="Sunucu Linki (#3539@51.255.91.80:3017)">
-                <input type="number" id="cnt" value="60" min="1" max="1100">
+                <input type="number" id="cnt" value="64" min="1" max="2000">
             </div>
             
             <div class="ctrl-row">
                 <label class="checkbox-label" style="flex:1">
                     <input type="checkbox" id="customRoom" onchange="toggleCustomRoom()">
-                    <strong>Gotn / Aow  lotsun iomun sülalesini</strong> <span style="color:#8892a6; font-weight:normal; font-size:11px">(Otomatik 420 Bot)</span>
+                    <strong>Gotn / Aow  lotsun iomun sülalesini</strong> <span style="color:#8892a6; font-weight:normal; font-size:11px">(Otomatik 64 Bot)</span>
                 </label>
             </div>
 
@@ -103,9 +109,9 @@ input[type=number]{max-width:80px;flex:0}
                 <input type="text" id="customNameInput" placeholder="Tam isim (Max 15 krk)" style="max-width:180px">
             </div>
             <div class="ctrl-row">
-                <button class="btn btn-go" id="btnStart">BOTLARI  Başlat</button>
+                <button class="btn btn-go" id="btnStart">BOTLARI Başlat</button>
                 <button class="btn btn-stop" id="btnStop"> botları çıkart</button>
-                <button class="btn btn-test" id="btnTest">sakın tıklama amk</button>
+                <button class="btn btn-test" id="btnTest">proxy test</button>
             </div>
             <div id="testRes"></div>
         </div>
@@ -116,9 +122,7 @@ input[type=number]{max-width:80px;flex:0}
 </div>
 
 <script>
-
 const API_URL = "https://ahmetyalamay-sever-production.up.railway.app";
-
 
 let currentNameMode = 'random';
 
@@ -129,9 +133,10 @@ window.setNameMode = function(mode) {
     document.getElementById('customNameInput').style.display = mode === 'custom' ? 'block' : 'none';
 };
 
+// GÜNCELLENDİ: Özel oda butonu 64 bot
 window.toggleCustomRoom = function() {
     const isCustom = document.getElementById('customRoom').checked;
-    document.getElementById('cnt').value = isCustom ? 420 : 60;
+    document.getElementById('cnt').value = isCustom ? 64 : 60;
 };
 
 document.getElementById('link').addEventListener('input', function() {
@@ -144,7 +149,7 @@ document.getElementById('link').addEventListener('input', function() {
 window.startBots = async function() {
     try {
         const l = document.getElementById('link').value;
-        const c = parseInt(document.getElementById('cnt').value) || 60;
+        const c = parseInt(document.getElementById('cnt').value) || 64;
         const isCustom = document.getElementById('customRoom').checked;
         
         if(!l) return alert('Lütfen bir sunucu seçin veya link girin!');
@@ -168,7 +173,7 @@ window.startBots = async function() {
         const data = await r.json();
         alert(data.msg || data.error);
         
-        btn.textContent = '▶ Filoyu Başlat';
+        btn.textContent = 'BOTLARI Başlat';
         btn.disabled = false;
         fetchData();
     } catch(e) {
@@ -200,7 +205,7 @@ window.testProxies = async function() {
 window.quickStart = function(id) {
     try {
         document.getElementById('link').value = 'https://starblast.io/#' + id;
-        document.getElementById('cnt').value = 60;
+        document.getElementById('cnt').value = 64;
         startBots();
     } catch(e) { console.error('quickStart hatası:', e); }
 };
@@ -224,6 +229,7 @@ async function fetchData() {
     } catch(e) { /* Sessizce geç */ }
 }
 
+// GÜNCELLENDİ: Radar artık Survival ve Team modlarını farklı renklerle gösteriyor
 async function fetchRadar() {
     try {
         const r = await fetch(`${API_URL}/api/radar`);
@@ -234,15 +240,24 @@ async function fetchRadar() {
         radar.innerHTML = data.servers.length ? data.servers.map(s => {
             const pct = Math.round((s.players / s.max) * 100);
             const color = pct > 80 ? '#ff5252' : pct > 50 ? '#ff9800' : '#00e676';
+            
+            // Mod etiketi (Survival turuncu, Team mavi)
+            const modeLower = (s.mode || "").toLowerCase();
+            const isTeam = modeLower.includes("team");
+            const modeClass = isTeam ? 'mode-team' : 'mode-survival';
+            const modeLabel = isTeam ? 'TEAM' : 'SURVIVAL';
+            
             return '<div class="srv">' +
                 '<div class="srv-info">' +
-                    '<div class="srv-name">' + s.name + ' <span style="color:#4facfe;font-size:11px">#' + s.id + '</span></div>' +
+                    '<div class="srv-name">' + s.name + ' <span style="color:#4facfe;font-size:11px">#' + s.id + '</span>' +
+                        '<span class="mode-badge ' + modeClass + '">' + modeLabel + '</span>' +
+                    '</div>' +
                     '<div class="srv-meta">' + s.players + '/' + s.max + ' Oyuncu ' + (s.open ? '' : '<span style="color:#ff5252">[KAPALI]</span>') + '</div>' +
                     '<div class="srv-bar"><div class="srv-bar-fill" style="width:' + pct + '%;background:' + color + '"></div></div>' +
                 '</div>' +
-                '<button class="btn-quick" onclick="quickStart(' + s.id + ')">▶ 60 Bot</button>' +
+                '<button class="btn-quick" onclick="quickStart(' + s.id + ')">▶ 64 Bot</button>' +
             '</div>';
-        }).join('') : '<div class="empty">EU Survival sunucusu bulunamadı.</div>';
+        }).join('') : '<div class="empty">EU sunucusu bulunamadı.</div>';
     } catch(e) {}
 }
 
