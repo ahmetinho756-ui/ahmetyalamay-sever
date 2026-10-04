@@ -9,9 +9,9 @@ const PORT = process.env.PORT || 3000;
 const JOIN_NAME = "ojct:4";
 const ECP_KEY = process.env.ECP_KEY || null;
 
-const MAX_BOTS = 2000; // GÜNCELLENDİ: 2000 bot
+const MAX_BOTS = 2000; 
 const PING_MS = 3000;
-const JOIN_DELAY = 250; // 2000 bot için optimize (~10 dk sürer)
+const JOIN_DELAY = 50; // 
 
 function randChars(len) {
     const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
